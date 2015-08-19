@@ -1,7 +1,7 @@
 class r {
 
   case $osfamily {
-    'Debian': {
+    /^(Debian|Ubuntu)$/: {
       package {"r-base": ensure => installed}
     }
     'RedHat': {
