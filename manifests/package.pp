@@ -11,6 +11,7 @@ define r::package($r_path = "/usr/bin/R", $repos = "'http://cran.rstudio.com'", 
   exec { "install_r_package_$name":
     command => "$r_path -e \"install.packages('$name', repos=c($repos), dependencies = $depopt)\"",
     unless  => "$r_path -q -e '\"$name\" %in% installed.packages()' | grep 'TRUE'",
+    timeout => 1800,
     require => Class['r']
   }
 
