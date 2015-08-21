@@ -16,6 +16,8 @@ define r::package($r_path = "/usr/bin/R", $repos = ['http://cran.rstudio.com'], 
     # turns array ['http://foo', 'http://bar'] into string: "'http://foo','http://bar'"
     $repostring = join(suffix(prefix($repoarray, "'"), "'"), ',')
 
+    # FIXME: install failures are not caught at the moment
+    # FIXME: We might need to turn this into a proper provider.
     exec { "install_r_package_$name":
         command => "$r_path -e \"install.packages('$name', repos=c($repostring), dependencies = $depopt)\"",
         unless  => "$r_path -q -e '\"$name\" %in% installed.packages()' | grep 'TRUE'",
