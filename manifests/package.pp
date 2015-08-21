@@ -1,18 +1,25 @@
-define r::package($r_path = "/usr/bin/R", $repos = "'http://cran.rstudio.com'", $dependencies = false) {
+define r::package($r_path = "/usr/bin/R", $repos = ['http://cran.rstudio.com'], $dependencies = false) {
 
-  $depopt = $dependencies ? {
-    true => 'TRUE',
-    default => 'FALSE'
-  }
+    $depopt = $dependencies ? {
+        true => 'TRUE',
+        default => 'FALSE'
+    }
 
-   # FIXME - we need to build a proper array of repositories
-   #  $repostring = join($repos.map |key| { "'$key'"}, ",")
+    if is_string($repos) {
+        $repoarray = [$repos]
+    }
 
-  exec { "install_r_package_$name":
-    command => "$r_path -e \"install.packages('$name', repos=c($repos), dependencies = $depopt)\"",
-    unless  => "$r_path -q -e '\"$name\" %in% installed.packages()' | grep 'TRUE'",
-    timeout => 1800,
-    require => Class['r']
-  }
+    if is_array($repos) {
+        $repoarray = $repos
+    }
 
+    # turns array ['http://foo', 'http://bar'] into string: "'http://foo','http://bar'"
+    $repostring = join(suffix(prefix($repoarray, "'"), "'"), ',')
+
+    exec { "install_r_package_$name":
+        command => "$r_path -e \"install.packages('$name', repos=c($repostring), dependencies = $depopt)\"",
+        unless  => "$r_path -q -e '\"$name\" %in% installed.packages()' | grep 'TRUE'",
+        timeout => 1800,
+        require => Class['r']
+    }
 }
