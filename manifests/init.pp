@@ -1,14 +1,14 @@
-class r {
+class r (
+    $ensure = 'present',
+){
 
-  case $osfamily {
-    /^(Debian|Ubuntu)$/: {
-      package {"r-base": ensure => installed}
+    $packagename = $osfamily ? {
+        /^(Debian|Ubuntu)$/ => 'r-base',
+        'RedHat' => 'R-core',
+        default => fail("Not supported on osfamily $osfamily")
     }
-    'RedHat': {
-      package {"R-core": ensure => installed}
-    }
-    default: { fail("Not supported on osfamily $osfamily") }
-  }
 
+    package { $packagename:
+        ensure => $ensure,
+    }
 }
-
