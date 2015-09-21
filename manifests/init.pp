@@ -5,7 +5,7 @@ class r (
     $packagename = $osfamily ? {
         /^(Debian|Ubuntu)$/ => 'r-base',
         'RedHat' => 'R-core',
-        default => fail("Not supported on osfamily $osfamily")
+        default => fail("Not supported on osfamily ${osfamily}")
     }
 
     package { $packagename:

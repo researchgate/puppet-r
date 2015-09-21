@@ -1,0 +1,13 @@
+{
+  "author": "forward3d",
+  "dependencies": [],
+  "license": "Apache License, Version 2.0",
+  "name": "forward3ddev-r",
+  "operatingsystem_support": [],
+  "project_page": "https://github.com/forward3d/puppet-r",
+  "requirements": [],
+  "source": "https://github.com/forward3d/puppet-r",
+  "summary": "Install and manage R and its packages",
+  "tags": [],
+  "version": "0.0.2"
+}
