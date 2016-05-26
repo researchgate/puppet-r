@@ -19,7 +19,7 @@ define r::package ($r_path = '/usr/bin/R', $repos = ['http://cran.rstudio.com'],
     # FIXME: We might need to turn this into a proper provider.
     exec { "install_r_package_${name}":
         command => "${r_path} -e \"install.packages('${name}', repos=c(${repostring}), dependencies = ${depopt})\"",
-        unless  => "${r_path} -q -e '\"${name}\" %in% installed.packages()' | grep 'TRUE'",
+        unless  => "${r_path} -q -e \"system.file(package = '${name}')\" | /bin/egrep -qo '/${name}\"'",
         timeout => 1800,
         require => Class['r']
     }
