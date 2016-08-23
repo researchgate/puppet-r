@@ -8,6 +8,11 @@ class r (
         default => fail("Not supported on osfamily ${osfamily}")
     }
 
+    if $osfamily =~ /^(Debian|Ubuntu)$/ {
+        package { 'r-recommended':
+            ensure => $ensure,
+        }
+    }
     package { $packagename:
         ensure => $ensure,
     }
